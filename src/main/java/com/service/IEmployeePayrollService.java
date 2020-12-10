@@ -9,7 +9,7 @@ public interface IEmployeePayrollService {
 
 	List<EmployeePayrollData> getEmployeePayrollData();
 	
-	EmployeePayrollData getEmployeePayrollDataById(int empid);
+	EmployeePayrollData getEmployeePayrollDataById(int empid) ;
 	
 	EmployeePayrollData createEmployeePayrollData(EmployeePayrollDTO empdto);
 	

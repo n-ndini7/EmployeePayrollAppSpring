@@ -1,6 +1,8 @@
 package com.dto;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -15,15 +17,31 @@ public class EmployeePayrollDTO {
     public Date startDate;
     public String notes; 
     
+    final static String NAME_PATTERN = "^[A-Z]{1}[a-zA-Z]{2,}";
+    
 
     public EmployeePayrollDTO(String name, double salary,String gender , String department , Date startDate , String notes) {
-    	this.name = name;
-    	this.salary = salary;
-    	this.gender = gender;
-    	this.department = department;
-    	this.startDate = startDate;
-    	this.notes = notes;
+    	
+			if(validate(name,salary,gender,department,startDate)) {
+			this.name = name;
+			this.salary = salary;
+			this.gender = gender;
+			this.department = department;
+			this.startDate = startDate;
+			this.notes = notes;
+			}
     }
+    
+    public static boolean validate(String name, double salary , String gender, String department , Date startDate) {
+    	boolean b1 = Pattern.matches(NAME_PATTERN, name);
+    	 boolean b2 = (salary>=400000&&salary<=500000)?true:false;
+    	 boolean b3 = (gender.equalsIgnoreCase("female")||gender.equalsIgnoreCase("male"))?true:false;
+    	 boolean b4 = department.contains("HR")||department.contains("sales")||department.contains("Engineering")||department.contains("Marketing");
+    	 Date current = Date.valueOf(LocalDate.now());
+    	 boolean b5 = (startDate.before(current))?true:false;
+		
+    	 return b1&&b2&&b3&&b4&&b5;
+	}
     
     public String getName() {
 		return name;
