@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+// Refactored employee payroll dto class to store gender , department , startdate and notes 
 public class EmployeePayrollDTO {
 
     public String name;
