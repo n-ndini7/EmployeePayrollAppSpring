@@ -11,32 +11,36 @@ import com.model.EmployeePayrollData;
 @Service
 public class EmployeePayrollService implements IEmployeePayrollService {
 
+	private List<EmployeePayrollData> employeePayrollList = new ArrayList<>();
 	public List<EmployeePayrollData> getEmployeePayrollData() {
-		List<EmployeePayrollData> empList = new ArrayList<>();
-		empList.add(new EmployeePayrollData(1,new EmployeePayrollDTO("Pankaj",30000)));
-		return empList;
+		return employeePayrollList;
 	}
 
 	public EmployeePayrollData getEmployeePayrollDataById(int empid) {
-		EmployeePayrollData empdata = null;
-		empdata = new EmployeePayrollData(1,new EmployeePayrollDTO("Pankaj",30000));
-		return empdata;
+		return employeePayrollList.get(empid-1);
 	}
 
 	public EmployeePayrollData createEmployeePayrollData(EmployeePayrollDTO empdto) {
 		EmployeePayrollData empdata = null;
-		empdata = new EmployeePayrollData(1,empdto);
+		empdata = new EmployeePayrollData(employeePayrollList.size()+1,empdto);
+		employeePayrollList.add(empdata);
 		return empdata;
 	}
 
-	public EmployeePayrollData updateEmployeePayrollData(EmployeePayrollDTO empdto) {
-		EmployeePayrollData empdata = null;
-		empdata = new EmployeePayrollData(1,empdto);
+	public EmployeePayrollData updateEmployeePayrollData(int empId,EmployeePayrollDTO empdto) {
+		EmployeePayrollData empdata = this.getEmployeePayrollDataById(empId);
+		empdata.setName(empdto.name);
+		empdata.setSalary(empdto.salary);
+		empdata.setGender(empdto.gender);
+		empdata.setDepartment(empdto.department);
+		empdata.setStartDate(empdto.startDate);
+		empdata.setNotes(empdto.notes);
+		employeePayrollList.set(empId-1, empdata);
 		return empdata;
 	}
 
 	public void deleteEmployeePayrollDataById(int empid) {
-
+		employeePayrollList.remove(empid-1);
 	}
 
 }
