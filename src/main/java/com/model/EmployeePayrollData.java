@@ -2,13 +2,22 @@ package com.model;
 
 import java.sql.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import com.dto.EmployeePayrollDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 //Refactored employee payroll dto class to store gender , department , startdate and notes 
+@Entity
+@Table(name="Employee_Payroll_Data")
 public class EmployeePayrollData {
 
-	private int employeeId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long employeeId;
 	 private String name;
 	    private double salary;
 	    private String gender;
@@ -17,8 +26,11 @@ public class EmployeePayrollData {
 	    private Date startDate;
 	    private String notes; 
 
-	    public EmployeePayrollData(int employeeId , EmployeePayrollDTO empdto) {
-	    	this.setEmployeeId(employeeId);
+	    public EmployeePayrollData() {
+	    	
+	    }
+	    public EmployeePayrollData( EmployeePayrollDTO empdto) {
+	    	this.employeeId = empdto.getEmployeeId();
 	    	this.name = empdto.getName();
 	    	this.salary = empdto.getSalary();
 	    	this.gender = empdto.getGender();
@@ -42,11 +54,11 @@ public class EmployeePayrollData {
 			this.salary = salary;
 		}
 		
-		public int getEmployeeId() {
+		public long getEmployeeId() {
 			return employeeId;
 		}
 
-		public void setEmployeeId(int employeeId) {
+		public void setEmployeeId(long employeeId) {
 			this.employeeId = employeeId;
 		}
 
