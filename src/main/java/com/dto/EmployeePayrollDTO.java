@@ -16,13 +16,15 @@ public @Data class EmployeePayrollDTO {
 
 	@Id
 	private long employeeId;
-	@NotEmpty(message="Employee name cannot be null")
+	@NotEmpty(message="Employee name cannot be null/invalid")
 	@Pattern(regexp="^[A-Z]{1}[a-zA-Z]{2,}",message="Employee Name Invalid")
 	public String name;
 	@Min(value=400000,message="Salary should be more than 400000")
 	@Max(value=500000,message="Salary should be more than 500000")
 	public double salary;
+	@NotEmpty(message="Employee gender cannot be null/invalid")
 	public String gender;
+	@NotEmpty(message="Employee department cannot be null/Invalid")
 	public String department;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	public Date startDate;
@@ -32,6 +34,8 @@ public @Data class EmployeePayrollDTO {
 			String notes) {
 
 		if (validate(gender, department, startDate)) {
+			this.name=name;
+			this.salary=salary;
 			this.gender = gender;
 			this.department = department;
 			this.startDate = startDate;
