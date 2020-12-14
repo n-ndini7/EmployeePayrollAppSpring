@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.dto.ResponseDTO;
 
+import lombok.extern.slf4j.Slf4j;
+
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(EmployeeNotFoundException.class)
@@ -31,7 +35,7 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(NoSuchElementException.class)
 	public final ResponseEntity<ResponseDTO> NoElementException(NoSuchElementException e) {
-		ResponseDTO status = new ResponseDTO("No such element exists!!");
+		ResponseDTO status = new ResponseDTO("Employee does not exist!!");
 		return new ResponseEntity<ResponseDTO>(status, HttpStatus.OK);
 	}
 	
@@ -49,4 +53,10 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ResponseDTO>(response,HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ResponseDTO> handleHttpMessageNotReadableException(HttpMessageNotReadableException exception){
+		log.error("Invalid Date Format",exception);
+		ResponseDTO response = new ResponseDTO("Exception while processing REST request \n Should have Date in the format dd MM yyyy");
+		return new ResponseEntity<ResponseDTO>(response,HttpStatus.BAD_REQUEST);
+	}
 }

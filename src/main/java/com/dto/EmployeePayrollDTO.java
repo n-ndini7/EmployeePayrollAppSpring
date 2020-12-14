@@ -1,21 +1,26 @@
 package com.dto;
 
 import java.sql.Date;
-import java.time.LocalDate;
+import java.util.List;
+
 import javax.persistence.Id;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.Data;
+import lombok.ToString;
 
 // Refactored employee payroll dto class to store gender , department , startdate and notes 
-public @Data class EmployeePayrollDTO {
+public @ToString class EmployeePayrollDTO {
 
 	@Id
-	private long employeeId;
+	public long employeeId;
 	@NotEmpty(message="Employee name cannot be null/invalid")
 	@Pattern(regexp="^[A-Z]{1}[a-zA-Z]{2,}",message="Employee Name Invalid")
 	public String name;
@@ -23,33 +28,15 @@ public @Data class EmployeePayrollDTO {
 	@Max(value=500000,message="Salary should be more than 500000")
 	public double salary;
 	@NotEmpty(message="Employee gender cannot be null/invalid")
+	@Pattern(regexp="male|female|Female|Male",message="Gender Invalid")
 	public String gender;
 	@NotEmpty(message="Employee department cannot be null/Invalid")
-	public String department;
+	public List<String> department;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	@PastOrPresent(message="StartDate should not be past or todays date")
 	public Date startDate;
+	@NotBlank(message="Profile Pic cannot be blank")
+	public String profilePic;
+	@NotBlank(message="Notes cannot be blank")
 	public String notes;
-
-	public EmployeePayrollDTO(String name, double salary, String gender, String department, Date startDate,
-			String notes) {
-
-		if (validate(gender, department, startDate)) {
-			this.name=name;
-			this.salary=salary;
-			this.gender = gender;
-			this.department = department;
-			this.startDate = startDate;
-			this.notes = notes;
-		}
-	}
-
-	public static boolean validate(String gender, String department, Date startDate) {
-		boolean b3 = (gender.equalsIgnoreCase("female") || gender.equalsIgnoreCase("male")) ? true : false;
-		boolean b4 = department.contains("HR") || department.contains("sales") || department.contains("Engineering")
-				|| department.contains("Marketing");
-		Date current = Date.valueOf(LocalDate.now());
-		boolean b5 = (startDate.before(current)) ? true : false;
-
-		return b3 && b4 && b5;
-	}
 }

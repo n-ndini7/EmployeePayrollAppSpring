@@ -47,7 +47,7 @@ public class EmployeePayrollAppController {
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<ResponseDTO> addEmployeePayrollData(@Valid @RequestBody EmployeePayrollDTO empdto) {
+	public ResponseEntity<ResponseDTO> addEmployeePayrollData(@RequestBody EmployeePayrollDTO empdto) {
 		responsedto = employeePayrollService.CreateEmpPayrollData(empdto);
 		return new ResponseEntity<ResponseDTO>(responsedto, HttpStatus.OK);
 	}

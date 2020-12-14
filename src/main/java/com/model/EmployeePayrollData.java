@@ -1,7 +1,12 @@
 package com.model;
 
 import java.sql.Date;
+import java.util.List;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,88 +15,41 @@ import javax.persistence.Table;
 import com.dto.EmployeePayrollDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import lombok.Data;
+
 //Refactored employee payroll dto class to store gender , department , startdate and notes 
 @Entity
-@Table(name="Employee_Payroll_Data")
-public class EmployeePayrollData {
+@Table(name="employee_payroll_data")
+public @Data class EmployeePayrollData {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="employee_id")
 	private long employeeId;
+	@Column(name="employee_name")
 	 private String name;
 	    private double salary;
 	    private String gender;
-	    private String department;
 	    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
 	    private Date startDate;
 	    private String notes; 
-
+	    private String profilePic;
+	    @ElementCollection
+	    @CollectionTable(name="employee_department", joinColumns = @JoinColumn(name="id"))
+	    @Column(name="department")
+	    private List<String> departments;
+	    
 	    public EmployeePayrollData() {
 	    	
 	    }
 	    public EmployeePayrollData( EmployeePayrollDTO empdto) {
-	    	this.employeeId = empdto.getEmployeeId();
-	    	this.name = empdto.getName();
-	    	this.salary = empdto.getSalary();
-	    	this.gender = empdto.getGender();
-	    	this.department = empdto.getDepartment();
-	    	this.startDate = empdto.getStartDate();
-	    	this.notes = empdto.getNotes();
+	    	this.employeeId = empdto.employeeId;
+	    	this.name = empdto.name;
+	    	this.salary = empdto.salary;
+	    	this.gender = empdto.gender;
+	    	this.departments = empdto.department;
+	    	this.startDate = empdto.startDate;
+	    	this.profilePic = empdto.profilePic;
+	    	this.notes = empdto.notes;
 	    }
-	    
-	    public String getName() {
-			return name;
-		}
-		public void setName(String name) {
-			this.name = name;
-		}
-	    
-		public double getSalary() {
-			return salary;
-		}
-
-		public void setSalary(double salary) {
-			this.salary = salary;
-		}
-		
-		public long getEmployeeId() {
-			return employeeId;
-		}
-
-		public void setEmployeeId(long employeeId) {
-			this.employeeId = employeeId;
-		}
-
-		public String getGender() {
-			return gender;
-		}
-
-		public void setGender(String gender) {
-			this.gender = gender;
-		}
-
-		public String getDepartment() {
-			return department;
-		}
-
-		public void setDepartment(String department) {
-			this.department = department;
-		}
-
-		public Date getStartDate() {
-			return startDate;
-		}
-
-		public void setStartDate(Date startDate) {
-			this.startDate = startDate;
-		}
-
-		public String getNotes() {
-			return notes;
-		}
-
-		public void setNotes(String notes) {
-			this.notes = notes;
-		}
-
 }

@@ -12,7 +12,10 @@ import com.exceptions.EmployeeNotFoundException;
 import com.model.EmployeePayrollData;
 import com.repository.EmployeePayrollRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class EmployeePayrollService implements IEmployeePayrollService {
 
 	String status = null;
@@ -21,6 +24,7 @@ public class EmployeePayrollService implements IEmployeePayrollService {
 
 	public ResponseDTO CreateEmpPayrollData(EmployeePayrollDTO empdto) {
 		EmployeePayrollData empdata = new EmployeePayrollData(empdto);
+		log.debug("Emp Data: ",empdata.toString());
 		employeePayrollRepository.save(empdata);
 		status = "Created Employee Payroll Data Successfully";
 		return new ResponseDTO(status, empdata);
@@ -31,7 +35,7 @@ public class EmployeePayrollService implements IEmployeePayrollService {
 		if (employeePayroll.getEmployeeId() == id) {
 			employeePayroll.setName(EmployeePayrollDTO.name);
 			employeePayroll.setSalary(EmployeePayrollDTO.salary);
-			employeePayroll.setDepartment(EmployeePayrollDTO.department);
+			employeePayroll.setDepartments(EmployeePayrollDTO.department);
 			employeePayroll.setGender(EmployeePayrollDTO.gender);
 			employeePayroll.setStartDate(EmployeePayrollDTO.startDate);
 			employeePayroll.setNotes(EmployeePayrollDTO.notes);
